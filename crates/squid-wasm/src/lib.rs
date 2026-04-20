@@ -28,7 +28,7 @@ impl Session {
     /// exported via [`Session::seeds`] for later restoration.
     #[wasm_bindgen(js_name = newRandom)]
     pub fn new_random() -> Session {
-        let mut ctx = Context::new(Params::unsecure());
+        let mut ctx = Context::new(Params::test());
         let (sk, ek, seeds) = ctx.keygen_with_seeds();
         Session { ctx, sk, ek, seeds }
     }
@@ -54,7 +54,7 @@ impl Session {
             bdd_mask,
             bdd_noise,
         };
-        let mut ctx = Context::new(Params::unsecure());
+        let mut ctx = Context::new(Params::test());
         let (sk, ek) = ctx.keygen_from_seeds(ks);
         Ok(Session {
             ctx,

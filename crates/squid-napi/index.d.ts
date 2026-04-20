@@ -5,7 +5,7 @@
 
 export declare class Evaluator {
   /**
-   * Rebuild a `Context` under `Params::unsecure()` and load the
+   * Rebuild a `Context` under `Params::test()` and load the
    * serialized evaluation key produced by the browser client.
    */
   static load(ekBytes: Buffer): Evaluator

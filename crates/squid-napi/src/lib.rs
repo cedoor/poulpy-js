@@ -17,11 +17,11 @@ pub struct Evaluator {
 
 #[napi]
 impl Evaluator {
-    /// Rebuild a `Context` under `Params::unsecure()` and load the
+    /// Rebuild a `Context` under `Params::test()` and load the
     /// serialized evaluation key produced by the browser client.
     #[napi(factory)]
     pub fn load(ek_bytes: Buffer) -> Result<Self> {
-        let mut ctx = Context::new(Params::unsecure());
+        let mut ctx = Context::new(Params::test());
         let ek = ctx
             .deserialize_evaluation_key(ek_bytes.as_ref())
             .map_err(io_err)?;

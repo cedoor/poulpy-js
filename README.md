@@ -17,7 +17,8 @@ squid-js/
 │  └─ squid-js/                # TS wrapper: SquidClient API over wasm
 └─ apps/
    ├─ client/                  # Vite + React demo
-   └─ server/                  # Node + Express demo
+   ├─ server/                  # Node + Express demo
+   └─ e2e/                     # Playwright end-to-end tests
 ```
 
 ## Prerequisites
@@ -32,15 +33,20 @@ squid-js/
 pnpm install
 pnpm build          # build:wasm → build:napi → build:js → build:server → build:client
 pnpm dev            # server on :3001, client on :5173
+pnpm test:e2e       # Playwright: installs Chromium (pretest), runs demo flow
 ```
 
 Individual steps are also available (`pnpm build:wasm`, `pnpm build:napi`, …).
 
+### CI
+
+GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, and `pnpm test:e2e` on pushes and pull requests to `main` / `master`.
+
 ## How it works
 
-1. **Browser.** `SquidClient.create()` initializes the wasm module, calls `Session::new_random` (which forwards to `squid::Context::keygen_with_seeds`), and exposes `evaluationKey`, `encryptU32`, `decryptU32`, and `exportSeeds`.
-2. **Client → server handshake.** The browser POSTs its base64-encoded evaluation-key bytes to `POST /session`. The server deserializes into a `squid_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
-3. **Compute.** The browser posts two ciphertexts to `POST /add`. The server deserializes both, runs `Context::add`, and returns the serialized result ciphertext.
+1. **Browser.** `SquidClient.create()` initializes the wasm module, calls `Session::new_random` (which forwards to `squid::Context::keygen_with_seeds` under `Params::test()`), and exposes `evaluationKey`, `encryptU32`, `decryptU32`, and `exportSeeds`.
+2. **Client → server handshake.** The browser POSTs raw evaluation-key bytes (`Content-Type: application/octet-stream`) to `POST /session`. The server deserializes into a `squid_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
+3. **Compute.** The browser POSTs packed ciphertext bytes to `POST /session/:id/add`. The server deserializes both, runs homomorphic add, and returns the serialized result ciphertext.
 4. **Decrypt.** Browser calls `client.decryptU32(result)`; secret-key material never leaves the page.
 
 ## Why `crates/criterion-shim`?
@@ -53,6 +59,6 @@ When upstream Poulpy moves criterion to `[dev-dependencies]`, delete the shim an
 
 ## Known constraints
 
-- `Params::unsecure()` — demo parameters. Not a vetted security level.
+- `Params::test()` — same layout bundle as Poulpy’s `bdd_arithmetic` **test_suite** (smaller and faster than the `bdd_arithmetic` example / `Params::unsecure()`). Not a vetted production security level.
 - Sessions are in-memory and unauthenticated (single-process demo only).
-- The evaluation-key upload is multi-MB under these params; expect the first `/session` request to be slow.
+- Keygen runs synchronously in the browser wasm until it finishes; the demo UI stays on “Booting wasm…” during that time.
