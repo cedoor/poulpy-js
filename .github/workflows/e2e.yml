@@ -24,7 +24,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@nightly
         with:
           targets: wasm32-unknown-unknown
 
