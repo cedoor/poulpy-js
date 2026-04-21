@@ -1,6 +1,6 @@
-# Poulpy JS
+# 🐙 Poulpy JS
 
-Browser-usable FHE over [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper around Poulpy), packaged as a pnpm + Cargo monorepo with a client/server demo.
+Browser-usable FHE over [Poulpy](https://github.com/poulpy-fhe/poulpy), via [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper), packaged as a pnpm + Cargo monorepo with a client/server demo.
 
 The browser generates its own `(secret_key, evaluation_key)` pair, ships only the evaluation key and ciphertexts to the server, and decrypts results locally. The server never sees plaintexts and never holds secret-key material.
 

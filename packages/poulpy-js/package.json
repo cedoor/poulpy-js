@@ -32,6 +32,7 @@
     "build:napi": "napi build --cargo-cwd ../../crates/poulpy-napi --platform --release --js index.js --dts index.d.ts napi && node -e \"require('fs').writeFileSync('napi/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:ts": "tsc -p tsconfig.json",
     "build": "pnpm run build:wasm && pnpm run build:napi && pnpm run build:ts",
+    "prepublishOnly": "pnpm run build",
     "dev": "tsc -p tsconfig.json --watch"
   },
   "devDependencies": {
