@@ -6,6 +6,7 @@ import { Evaluator } from "poulpy-js/server";
 const PORT = Number(process.env.PORT ?? 3001);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? "http://localhost:5173";
 const MAX_BODY = process.env.MAX_BODY ?? "512mb";
+const POULPY_PARAMS_SET = process.env.POULPY_PARAMS_SET ?? "test";
 const OCTET_STREAM = "application/octet-stream";
 
 const sessions = new Map<string, Evaluator>();
@@ -27,7 +28,7 @@ app.post("/session", rawBody, (req: Request, res: Response) => {
   }
   let evaluator: Evaluator;
   try {
-    evaluator = Evaluator.load(ek);
+    evaluator = Evaluator.load(ek, POULPY_PARAMS_SET as string);
   } catch (err) {
     res.status(400).json({ error: `invalid evaluation key: ${(err as Error).message}` });
     return;
@@ -74,4 +75,5 @@ app.delete("/session/:id", (req: Request, res: Response) => {
 app.listen(PORT, () => {
   console.log(`[poulpy-js server] listening on http://localhost:${PORT}`);
   console.log(`[poulpy-js server] accepting CORS from ${CLIENT_ORIGIN}`);
+  console.log(`[poulpy-js server] POULPY_PARAMS_SET=${POULPY_PARAMS_SET}`);
 });

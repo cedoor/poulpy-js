@@ -20,6 +20,8 @@ export async function init(wasmUrl?: string | URL | Request): Promise<void> {
 
 export interface CreateOptions {
   seeds?: Uint8Array;
+  /** Squid parameter set name (`"test"` or `"unsecure"`). */
+  paramsSet: string;
 }
 
 /**
@@ -36,11 +38,12 @@ export class PoulpyClient {
     this.evaluationKey = ek;
   }
 
-  static async create(opts: CreateOptions = {}): Promise<PoulpyClient> {
+  static async create(opts: CreateOptions): Promise<PoulpyClient> {
     await init();
+    const { paramsSet } = opts;
     const session = opts.seeds
-      ? Session.fromSeeds(opts.seeds)
-      : Session.newRandom();
+      ? Session.fromSeeds(opts.seeds, paramsSet)
+      : Session.newRandom(paramsSet);
     const ek = session.evaluationKeyBytes();
     return new PoulpyClient(session, ek);
   }

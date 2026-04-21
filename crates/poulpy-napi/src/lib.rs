@@ -17,11 +17,16 @@ pub struct Evaluator {
 
 #[napi]
 impl Evaluator {
-    /// Rebuild a `Context` under `Params::test()` and load the
-    /// serialized evaluation key produced by the browser client.
+    /// Rebuild a `Context` for the named parameter set (`"test"` or `"unsecure"`)
+    /// and load the serialized evaluation key produced by the browser client.
     #[napi(factory)]
-    pub fn load(ek_bytes: Buffer) -> Result<Self> {
-        let mut ctx = Context::new(Params::test());
+    pub fn load(ek_bytes: Buffer, params_name: String) -> Result<Self> {
+        let params = Params::by_name(&params_name).ok_or_else(|| {
+            Error::from_reason(format!(
+                "unknown parameter set {params_name:?}; expected \"test\" or \"unsecure\""
+            ))
+        })?;
+        let mut ctx = Context::new(params);
         let ek = ctx
             .deserialize_evaluation_key(ek_bytes.as_ref())
             .map_err(io_err)?;

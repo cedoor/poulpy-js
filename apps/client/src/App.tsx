@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { PoulpyClient } from "poulpy-js/client";
 
 const SERVER_URL = (import.meta.env.VITE_SERVER_URL as string | undefined) ?? "http://localhost:3001";
+const POULPY_PARAMS_SET = (import.meta.env.POULPY_PARAMS_SET as string | undefined) ?? "test";
 const OCTET_STREAM = "application/octet-stream";
 
 type Status =
@@ -40,7 +41,7 @@ export function App() {
     let cancelled = false;
     (async () => {
       try {
-        const c = await PoulpyClient.create();
+        const c = await PoulpyClient.create({ paramsSet: POULPY_PARAMS_SET });
         if (cancelled) return;
         const resp = await fetch(`${SERVER_URL}/session`, {
           method: "POST",

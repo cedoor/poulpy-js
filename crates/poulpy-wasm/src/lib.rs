@@ -9,6 +9,14 @@ use wasm_bindgen::prelude::*;
 
 const SEEDS_LEN: usize = 96;
 
+fn params_from_name(name: &str) -> Result<Params, JsError> {
+    Params::by_name(name).ok_or_else(|| {
+        JsError::new(&format!(
+            "unknown parameter set {name:?}; expected \"test\" or \"unsecure\""
+        ))
+    })
+}
+
 #[wasm_bindgen(start)]
 pub fn __start() {
     console_error_panic_hook::set_once();
@@ -27,16 +35,17 @@ impl Session {
     /// Fresh keys from OS randomness. Returns a session whose seeds can be
     /// exported via [`Session::seeds`] for later restoration.
     #[wasm_bindgen(js_name = newRandom)]
-    pub fn new_random() -> Session {
-        let mut ctx = Context::new(Params::test());
+    pub fn new_random(params_name: &str) -> Result<Session, JsError> {
+        let params = params_from_name(params_name)?;
+        let mut ctx = Context::new(params);
         let (sk, ek, seeds) = ctx.keygen_with_seeds();
-        Session { ctx, sk, ek, seeds }
+        Ok(Session { ctx, sk, ek, seeds })
     }
 
     /// Deterministic rebuild from a 96-byte seed blob produced by
     /// [`Session::seeds`].
     #[wasm_bindgen(js_name = fromSeeds)]
-    pub fn from_seeds(seeds: &[u8]) -> Result<Session, JsError> {
+    pub fn from_seeds(seeds: &[u8], params_name: &str) -> Result<Session, JsError> {
         if seeds.len() != SEEDS_LEN {
             return Err(JsError::new(&format!(
                 "expected {SEEDS_LEN}-byte seeds blob, got {}",
@@ -54,7 +63,8 @@ impl Session {
             bdd_mask,
             bdd_noise,
         };
-        let mut ctx = Context::new(Params::test());
+        let params = params_from_name(params_name)?;
+        let mut ctx = Context::new(params);
         let (sk, ek) = ctx.keygen_from_seeds(ks);
         Ok(Session {
             ctx,

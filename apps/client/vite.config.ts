@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  // Expose POULPY_* from .env on import.meta.env (same key as server: POULPY_PARAMS_SET).
+  envPrefix: ["VITE_", "POULPY_"],
   server: {
     port: 5173,
     // Needed for SharedArrayBuffer / cross-origin isolation if we later want
