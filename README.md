@@ -1,8 +1,8 @@
 # 🐙 Poulpy JS
 
-Browser-usable FHE over [Poulpy](https://github.com/poulpy-fhe/poulpy), via [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper), packaged as a pnpm + Cargo monorepo with a client/server demo.
+[**`poulpy-js`**](https://www.npmjs.com/package/poulpy-js) is a JavaScript library for browser-usable FHE, built on [Poulpy](https://github.com/poulpy-fhe/poulpy) via [Squid](https://github.com/cedoor/squid) (an ergonomic Rust wrapper). It ships a WebAssembly client (`poulpy-js/client`) and a napi-rs Node evaluator (`poulpy-js/server`) — see [packages/poulpy-js/README.md](./packages/poulpy-js/README.md) for install and API docs.
 
-The browser generates its own `(secret_key, evaluation_key)` pair, ships only the evaluation key and ciphertexts to the server, and decrypts results locally. The server never sees plaintexts and never holds secret-key material.
+This repo is the Cargo + pnpm monorepo that builds the library, plus a client/server demo showing it end-to-end: the browser generates its own `(secret_key, evaluation_key)` pair, ships only the evaluation key and ciphertexts to the server, and decrypts results locally. The server never sees plaintexts and never holds secret-key material.
 
 ```
 poulpy-js/
