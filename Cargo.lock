@@ -112,10 +112,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "criterion"
-version = "0.8.2"
-
-[[package]]
 name = "ctor"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -413,12 +409,11 @@ checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 [[package]]
 name = "poulpy-core"
 version = "0.5.0"
-source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=067fd785a1d9087f7d9fa437a8503a2d74ac737f#067fd785a1d9087f7d9fa437a8503a2d74ac737f"
+source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=e5450f9a51884082c293c8a13846c8a6fb310626#e5450f9a51884082c293c8a13846c8a6fb310626"
 dependencies = [
  "anyhow",
  "bytemuck",
  "byteorder",
- "criterion",
  "dashu-float",
  "itertools",
  "once_cell",
@@ -430,11 +425,10 @@ dependencies = [
 [[package]]
 name = "poulpy-cpu-ref"
 version = "0.5.0"
-source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=067fd785a1d9087f7d9fa437a8503a2d74ac737f#067fd785a1d9087f7d9fa437a8503a2d74ac737f"
+source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=e5450f9a51884082c293c8a13846c8a6fb310626#e5450f9a51884082c293c8a13846c8a6fb310626"
 dependencies = [
  "bytemuck",
  "byteorder",
- "criterion",
  "dashu-float",
  "itertools",
  "once_cell",
@@ -449,13 +443,12 @@ dependencies = [
 [[package]]
 name = "poulpy-hal"
 version = "0.5.0"
-source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=067fd785a1d9087f7d9fa437a8503a2d74ac737f#067fd785a1d9087f7d9fa437a8503a2d74ac737f"
+source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=e5450f9a51884082c293c8a13846c8a6fb310626#e5450f9a51884082c293c8a13846c8a6fb310626"
 dependencies = [
  "anyhow",
  "bytemuck",
  "byteorder",
  "cmake",
- "criterion",
  "dashu-float",
  "itertools",
  "once_cell",
@@ -479,11 +472,10 @@ dependencies = [
 [[package]]
 name = "poulpy-schemes"
 version = "0.5.0"
-source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=067fd785a1d9087f7d9fa437a8503a2d74ac737f#067fd785a1d9087f7d9fa437a8503a2d74ac737f"
+source = "git+https://github.com/poulpy-fhe/poulpy.git?rev=e5450f9a51884082c293c8a13846c8a6fb310626#e5450f9a51884082c293c8a13846c8a6fb310626"
 dependencies = [
  "anyhow",
  "byteorder",
- "criterion",
  "itertools",
  "paste",
  "poulpy-core",
@@ -682,7 +674,7 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 [[package]]
 name = "squid"
 version = "0.1.0-alpha.1"
-source = "git+https://github.com/cedoor/squid.git#73a7133b72aa039811a91f07c1a072bc491f5f0d"
+source = "git+https://github.com/cedoor/squid.git?rev=fcb6c21994849083331241b7cd436284f27ef0ab#fcb6c21994849083331241b7cd436284f27ef0ab"
 dependencies = [
  "getrandom 0.3.4",
  "poulpy-core",

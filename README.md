@@ -11,8 +11,7 @@ poulpy-js/
 ├─ package.json                # root scripts
 ├─ crates/
 │  ├─ poulpy-wasm/             # wasm-bindgen bindings (browser)
-│  ├─ poulpy-napi/             # napi-rs bindings (Node server)
-│  └─ criterion-shim/          # no-op `criterion` replacement; see below
+│  └─ poulpy-napi/             # napi-rs bindings (Node server)
 ├─ packages/
 │  └─ poulpy-js/               # dual entry point:
 │                              #   `poulpy-js/client` (browser, wasm worker + PoulpyClient)
@@ -50,14 +49,6 @@ GitHub Actions (`.github/workflows/e2e.yml`) runs `pnpm install`, `pnpm build`, 
 2. **Client → server handshake.** The browser POSTs raw evaluation-key bytes (`Content-Type: application/octet-stream`) to `POST /session`. The server deserializes into a `poulpy_napi::Evaluator` and stores it in an in-memory `Map` keyed by a UUID.
 3. **Compute.** The browser POSTs packed ciphertext bytes to `POST /session/:id/add`. The server deserializes both, runs homomorphic add, and returns the serialized result ciphertext.
 4. **Decrypt.** Browser `await`s `client.decryptU32(result)`; secret-key material never leaves the worker/page.
-
-## Why `crates/criterion-shim`?
-
-Poulpy 0.5.0 declares `criterion` in `[dependencies]` (not `[dev-dependencies]`), and several library modules import `criterion::{Criterion, BenchmarkId}` for `pub fn bench_*` helpers. Real criterion transitively depends on `rayon`, which does not compile on `wasm32-unknown-unknown`.
-
-The shim crate provides the exact subset of the 0.8 API Poulpy's library surface touches, as no-ops. Poulpy's `bench_*` helpers type-check but are never called on our hot path, so the bodies never run. Workspace `[patch.crates-io]` redirects `criterion` to the shim for every target.
-
-When upstream Poulpy moves criterion to `[dev-dependencies]`, delete the shim and the patch entry.
 
 ## Known constraints
 
