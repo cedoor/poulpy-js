@@ -6,7 +6,7 @@
   "scripts": {
     "build:poulpy": "pnpm --filter poulpy-js build",
     "build:demo": "pnpm --filter @poulpy-js/demo build",
-    "build": "pnpm run build:poulpy && pnpm run build:demo",
+    "build": "pnpm run build:demo",
     "dev": "pnpm --filter @poulpy-js/demo dev",
     "test": "pnpm --filter @poulpy-js/e2e test",
     "clean": "rimraf target packages/poulpy-js/wasm packages/poulpy-js/napi packages/poulpy-js/dist demo/.next"
