@@ -1,0 +1,19 @@
+# Keep build context small and avoid stale artifacts; the image runs a full build.
+.git
+.gitignore
+.cursor
+.DS_Store
+**/.next
+**/node_modules
+target
+**/dist
+packages/poulpy-js/wasm
+packages/poulpy-js/napi
+demo/.next
+tests/playwright-report
+tests/test-results
+**/*.log
+.env
+.env.local
+.env.*
+.pnpm-store

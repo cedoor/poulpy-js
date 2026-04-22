@@ -1,6 +1,6 @@
 {
   "name": "poulpy-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Browser FHE client and Node evaluator over Squid. `poulpy-js/client` uses wasm; `poulpy-js/server` uses a napi-rs native addon.",
   "type": "module",
   "exports": {
@@ -32,7 +32,8 @@
     "build:napi": "napi build --cargo-cwd ../../crates/poulpy-napi --platform --release --js index.js --dts index.d.ts napi && node -e \"require('fs').writeFileSync('napi/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "build:ts": "tsc -p tsconfig.json",
     "build": "pnpm run build:wasm && pnpm run build:napi && pnpm run build:ts",
-    "prepublishOnly": "pnpm run build",
+    "build:poulpy:linux": "bash scripts/build-linux-napi.sh",
+    "prepublishOnly": "pnpm run build && pnpm run build:poulpy:linux",
     "dev": "tsc -p tsconfig.json --watch"
   },
   "devDependencies": {
