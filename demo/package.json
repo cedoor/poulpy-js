@@ -5,7 +5,6 @@
   "description": "Playful Next.js FHE demo — keygen, encrypt, evaluate, decrypt with poulpy-js.",
   "scripts": {
     "dev": "next dev",
-    "prebuild": "pnpm --filter poulpy-js run build",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -14,7 +13,7 @@
     "next": "^15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "poulpy-js": "workspace:*"
+    "poulpy-js": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22",
