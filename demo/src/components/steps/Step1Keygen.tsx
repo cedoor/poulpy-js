@@ -10,7 +10,6 @@ import type { Phase } from '@/lib/fhe-types'
 interface Step1KeygenProps {
   skPreview: Uint8Array | null
   ekBytes: Uint8Array | null
-  sessionId: string | null
   phase: Phase
   onGenerate: () => void
 }
@@ -30,9 +29,9 @@ function KeyIcon({ color, outline }: { color: string; outline?: boolean }) {
   )
 }
 
-export function Step1Keygen({ skPreview, ekBytes, sessionId, phase, onGenerate }: Step1KeygenProps) {
+export function Step1Keygen({ skPreview, ekBytes, phase, onGenerate }: Step1KeygenProps) {
   const busy = phase !== 'idle'
-  const done = !!skPreview && !!sessionId
+  const done = !!skPreview && !!ekBytes
 
   return (
     <Card accent="var(--key)">

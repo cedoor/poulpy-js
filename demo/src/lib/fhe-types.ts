@@ -22,7 +22,6 @@ export interface FheState {
   // Step 1 — Keygen
   skPreview: Uint8Array | null
   ekBytes: Uint8Array | null
-  sessionId: string | null
   // Step 2 — Encrypt
   a: number
   b: number

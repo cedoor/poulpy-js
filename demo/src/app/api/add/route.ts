@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sessions } from '@/lib/sessions'
+import { getDemoEvaluator } from '@/lib/load-demo-evaluator'
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const { id } = await params
-  const evaluator = sessions.get(id)
-  if (!evaluator) {
-    return NextResponse.json({ error: 'unknown sessionId' }, { status: 404 })
-  }
+export async function POST(req: NextRequest) {
+  const evaluator = getDemoEvaluator()
   const body = Buffer.from(await req.arrayBuffer())
   if (body.length < 4) {
     return NextResponse.json({ error: 'body must be u32-le(a_len) || a || b' }, { status: 400 })

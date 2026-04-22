@@ -16,7 +16,7 @@ const OCTET = 'application/octet-stream'
 
 type Action =
   | { type: 'SET_PHASE'; phase: Phase }
-  | { type: 'KEYGEN_DONE'; skPreview: Uint8Array; ekBytes: Uint8Array; sessionId: string }
+  | { type: 'KEYGEN_DONE'; skPreview: Uint8Array; ekBytes: Uint8Array }
   | { type: 'ENCRYPT_DONE'; ctA: Uint8Array; ctB: Uint8Array }
   | { type: 'EVALUATE_DONE'; ctSum: Uint8Array }
   | { type: 'DECRYPT_DONE'; result: number }
@@ -30,7 +30,6 @@ const initial: FheState = {
   phase: 'idle',
   skPreview: null,
   ekBytes: null,
-  sessionId: null,
   a: 7,
   b: 5,
   ctA: null,
@@ -51,7 +50,6 @@ function reducer(state: FheState, action: Action): FheState {
         phase: 'idle',
         skPreview: action.skPreview,
         ekBytes: action.ekBytes,
-        sessionId: action.sessionId,
         ctA: null,
         ctB: null,
         ctSum: null,
@@ -113,16 +111,10 @@ export function useFhe() {
       const ekBytes = client.evaluationKey
 
       log('ok', `client: sk ready (${formatBytes(seeds.byteLength)}) — stays local`)
-      log('info', 'client: registering server session (eval key matches this seed, shipped with the app)…')
+      log('info', 'client: EK matches server (same seed; server loads demo-ek at deploy)')
+      log('dim', 'server: stateless /api/add, waiting for ciphertexts…')
 
-      const resp = await fetch(`${API_BASE}/session`, { method: 'POST' })
-      if (!resp.ok) throw new Error(`session register failed (${resp.status})`)
-      const { sessionId } = (await resp.json()) as { sessionId: string }
-
-      log('ok', `client: server session id=${sessionId.slice(0, 8)}…`)
-      log('dim', 'server: waiting for ciphertexts…')
-
-      dispatch({ type: 'KEYGEN_DONE', skPreview, ekBytes, sessionId })
+      dispatch({ type: 'KEYGEN_DONE', skPreview, ekBytes })
     } catch (err) {
       log('err', `client: keygen failed — ${(err as Error).message}`)
       dispatch({ type: 'ERROR', message: (err as Error).message })
@@ -151,15 +143,15 @@ export function useFhe() {
   )
 
   const doEvaluate = useCallback(
-    async (ctA: Uint8Array, ctB: Uint8Array, sessionId: string) => {
+    async (ctA: Uint8Array, ctB: Uint8Array) => {
       dispatch({ type: 'SET_PHASE', phase: 'sending' })
       const payloadSize = formatBytes(ctA.byteLength + ctB.byteLength)
-      log('info', `client → server: POST /session/${sessionId.slice(0, 8)}…/add (${payloadSize})`)
+      log('info', `client → server: POST /api/add (${payloadSize})`)
       try {
         const body = packCiphertexts(ctA, ctB)
         dispatch({ type: 'SET_PHASE', phase: 'evaluating' })
         log('in', 'server: received ciphertexts, computing ctₐ ⊞ ct_b')
-        const resp = await fetch(`${API_BASE}/session/${sessionId}/add`, {
+        const resp = await fetch(`${API_BASE}/add`, {
           method: 'POST',
           headers: { 'Content-Type': OCTET },
           body: body as BodyInit,

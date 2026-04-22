@@ -40,7 +40,7 @@ function Footer() {
 
 export default function Demo() {
   const { state, doKeygen, doEncrypt, doEvaluate, doDecrypt, doReset, setA, setB } = useFhe()
-  const { phase, skPreview, ekBytes, sessionId, a, b, ctA, ctB, ctSum, result, logs, error } = state
+  const { phase, skPreview, ekBytes, a, b, ctA, ctB, ctSum, result, logs, error } = state
 
   const busy = phase !== 'idle'
 
@@ -56,10 +56,10 @@ export default function Demo() {
   }, [doEncrypt, a, b])
 
   const handleEvaluate = useCallback(() => {
-    if (ctA && ctB && sessionId) {
-      doEvaluate(ctA, ctB, sessionId)
+    if (ctA && ctB) {
+      doEvaluate(ctA, ctB)
     }
-  }, [doEvaluate, ctA, ctB, sessionId])
+  }, [doEvaluate, ctA, ctB])
 
   const handleDecrypt = useCallback(() => {
     if (ctSum) doDecrypt(ctSum)
@@ -166,7 +166,6 @@ export default function Demo() {
           <Step1Keygen
             skPreview={skPreview}
             ekBytes={ekBytes}
-            sessionId={sessionId}
             phase={phase}
             onGenerate={doKeygen}
           />
