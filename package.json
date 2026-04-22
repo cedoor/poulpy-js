@@ -5,12 +5,11 @@
   "description": "Browser-usable FHE via Squid: wasm bindings, Node bindings, and a client/server demo.",
   "scripts": {
     "build:poulpy": "pnpm --filter poulpy-js build",
-    "build:server": "pnpm --filter @poulpy-js/server build",
-    "build:client": "pnpm --filter @poulpy-js/client build",
-    "build": "pnpm run build:poulpy && pnpm run build:server && pnpm run build:client",
-    "dev": "concurrently -n server,client -c blue,green \"pnpm --filter @poulpy-js/server dev\" \"pnpm --filter @poulpy-js/client dev\"",
+    "build:demo": "pnpm --filter @poulpy-js/demo build",
+    "build": "pnpm run build:poulpy && pnpm run build:demo",
+    "dev": "pnpm --filter @poulpy-js/demo dev",
     "test": "pnpm --filter @poulpy-js/e2e test",
-    "clean": "rimraf target packages/poulpy-js/wasm packages/poulpy-js/napi packages/poulpy-js/dist apps/server/dist apps/client/dist"
+    "clean": "rimraf target packages/poulpy-js/wasm packages/poulpy-js/napi packages/poulpy-js/dist demo/.next"
   },
   "devDependencies": {
     "concurrently": "^9.0.1",

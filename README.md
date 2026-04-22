@@ -16,10 +16,8 @@ poulpy-js/
 │  └─ poulpy-js/               # dual entry point:
 │                              #   `poulpy-js/client` (browser, wasm worker + PoulpyClient)
 │                              #   `poulpy-js/server` (Node, napi-backed Evaluator)
-└─ apps/
-   ├─ client/                  # Vite + React demo
-   ├─ server/                  # Node + Express demo
-   └─ e2e/                     # Playwright end-to-end tests
+├─ demo/                       # Next.js FHE demo
+└─ tests/                      # Playwright end-to-end tests
 ```
 
 ## Prerequisites
@@ -32,12 +30,12 @@ poulpy-js/
 
 ```sh
 pnpm install
-pnpm build          # build:poulpy (wasm + napi + ts) → build:server → build:client
-pnpm dev            # server on :3001, client on :5173
+pnpm build          # build:poulpy (wasm + napi + ts) → build:demo
+pnpm dev            # Next.js demo on :3000
 pnpm test           # Playwright: installs Chromium (pretest), runs demo flow
 ```
 
-Individual steps are also available (`pnpm build:poulpy`, `pnpm build:server`, `pnpm build:client`). `build:poulpy` compiles the wasm crate via `wasm-pack`, the napi crate via `@napi-rs/cli`, and the TS wrappers via `tsc` — all into `packages/poulpy-js/`.
+Individual steps are also available (`pnpm build:poulpy`, `pnpm build:demo`). `build:poulpy` compiles the wasm crate via `wasm-pack`, the napi crate via `@napi-rs/cli`, and the TS wrappers via `tsc` — all into `packages/poulpy-js/`.
 
 ### CI
 

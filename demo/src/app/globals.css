@@ -1,0 +1,72 @@
+:root {
+  --bg: oklch(0.975 0.01 80);
+  --bg-tint: oklch(0.955 0.015 80);
+  --card: oklch(0.995 0.004 80);
+  --ink: oklch(0.22 0.015 60);
+  --ink-soft: oklch(0.42 0.02 60);
+  --ink-faint: oklch(0.65 0.015 60);
+  --rule: oklch(0.88 0.012 70);
+  --rule-strong: oklch(0.78 0.015 70);
+
+  --plain: oklch(0.66 0.15 25);
+  --plain-soft: oklch(0.92 0.05 25);
+  --cipher: oklch(0.62 0.13 210);
+  --cipher-soft: oklch(0.93 0.04 210);
+  --key: oklch(0.62 0.13 290);
+  --key-soft: oklch(0.93 0.04 290);
+
+  --ok: oklch(0.62 0.14 150);
+  --warn: oklch(0.72 0.14 70);
+
+  --term-bg: oklch(0.2 0.015 260);
+  --term-ink: oklch(0.92 0.01 90);
+  --term-dim: oklch(0.62 0.015 90);
+
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--plain-soft);
+}
+
+@keyframes poulpy-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes parcel {
+  0% { transform: translateX(-4px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(68px); opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}

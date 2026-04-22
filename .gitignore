@@ -6,9 +6,10 @@ pkg/
 packages/poulpy-js/wasm/
 packages/poulpy-js/napi/
 apps/server/native/
-apps/client/dist/
-apps/e2e/playwright-report/
-apps/e2e/test-results/
+demo/dist/
+demo/.next/
+tests/playwright-report/
+tests/test-results/
 .DS_Store
 .env
 .env.local
